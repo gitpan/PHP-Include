@@ -1,6 +1,9 @@
 Revision history for Perl extension PHP::Include.
 
-0.05   Tue Dec 31 09:17:00 2002
+0.06  Mon Oct 13 09:06:00 2003
+	- include_php_vars() now can have a single quoted string
+
+0.05  Tue Dec 31 09:17:00 2002
 	- understands constants 
 	- ability to get diagnostics
 

@@ -5,7 +5,7 @@ use warnings;
 use Filter::Simple;
 use Carp qw( croak );
 
-our $VERSION = .05;
+our $VERSION = .06;
 our $DEBUG = 0;
 
 FILTER {
@@ -17,9 +17,20 @@ FILTER {
 
     ## include_php_vars() macro
     s/
-	include_php_vars\s*\(\s*"(.+)"\s*\)\s*;
+	(.*)			# any amt of leading text
+	include_php_vars	# function call
+	\s*			# optional whitespace
+	\(			# opening parens		    
+	\s*			# optional whitespace
+	(["'])			# opening single or double quote
+	(.+)			# a string
+	\2			# closing single or double quote
+	\s*			# optional whitespace
+	\)			# closing paren
+	.*;			# rest of the line
     /
-	read_file( 'PHP::Include::Vars', $1)
+	$1.
+	read_file( 'PHP::Include::Vars', $3);
     /gex;
 
 };
