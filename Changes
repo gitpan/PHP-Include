@@ -1,5 +1,9 @@
 Revision history for Perl extension PHP::Include.
 
+0.05   Tue Dec 31 09:17:00 2002
+	- understands constants 
+	- ability to get diagnostics
+
 0.02  Mon Dec 30 09:02:00 2002
 	- docs update (thanks Andy)
 

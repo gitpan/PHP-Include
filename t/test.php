@@ -20,4 +20,10 @@ $hash4 = Array(
     'larry' => 'Larry Wall'
 );
 
+define( "TEST_CONSTANT", 'NJ and you, perfect together' );
+define( "ANOTHER_CONSTANT",	    "NJ, the garden state" );
+
+$hash5 = Array( 'constant'  => TEST_CONSTANT );
+$array5 = Array( 'test', ANOTHER_CONSTANT );
+
 ?>

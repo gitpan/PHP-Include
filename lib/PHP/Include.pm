@@ -5,25 +5,36 @@ use warnings;
 use Filter::Simple;
 use Carp qw( croak );
 
-our $VERSION = .02;
+our $VERSION = .05;
+our $DEBUG = 0;
 
 FILTER {
+
+    ## read in any options and turn on diagnostics if asked 
+
+    my ( $class, %options ) = map { lc($_) } @_; 
+    $DEBUG = 1 if $options{debug};
+
+    ## include_php_vars() macro
     s/
 	include_php_vars\s*\(\s*"(.+)"\s*\)\s*;
     /
 	read_file( 'PHP::Include::Vars', $1)
     /gex;
+
 };
+
+## read a file and return it's contents with the appropriate
+## filter around it
 
 sub read_file {
     my ($filter,$file) = @_;
+    print STDERR qq(OPENING PHP FILE "$file" FOR FILTER $filter\n\n) if $DEBUG;
     open( IN, $file ) || croak( "$file doesn't exist!" );
-    return( 
-	"use $filter;\n" .
-	join( '', <IN> ) .
-	"no $filter;\n"
-    );
+    my $php =  join( '', <IN> );
+    print STDERR "ORIGINAL PHP:\n\n", $php if $DEBUG;
     close( IN );
+    return( "use $filter;\n" . $php . "no $filter;\n" );
 }
 
 1;
@@ -66,8 +77,8 @@ code. For example, given a file of PHP variable declarations:
 
     <?php
 
+    define( "PORT", 80 );
     $robot = 'Book Agent';
-    $port = 80;
     $hosts = Array( 
 	'www.amazon.com'	=> 'Amazon',
 	'www.bn.com'		=> 'Barnes and Noble',
@@ -84,8 +95,8 @@ You can use this from your Perl program like so:
 
 Behind the scenes the PHP is rewritten as this Perl:
 
+    use constant PORT => 80;
     my $robot = 'Book Agent';
-    my $port = 80;
     my %hosts = (
 	'www.amazon.com'	=> 'Amazon',
 	'www.bn.com'		=> 'Barnes & Noble',
@@ -95,19 +106,25 @@ Behind the scenes the PHP is rewritten as this Perl:
 
 Notice that the enclosing E<lt>php? and ?E<gt> are removed, all variables are 
 lexically scoped with 'my' and that the $ sigils are changed as appropriate to 
-(@ and %). Apart from that PHP and Perl are very similar.
+(@ and %). In addition PHP constant definitions are translated into Perl 
+constants. 
+
+=head1 DIAGNOSTICS
+
+If you would like to see diagnostic information on STDERR you will need to 
+use this module slightly differently:
+
+    use PHP::Include ( DEBUG => 1 );
+
+This will cause the PHP that is read in, and the generated Perl to be printed on
+STDERR. It can be handy if you are trying to extend the grammar, or are trying
+to figure out what isn't getting parsed properly.
 
 =head1 TODO
 
 =over 4
 
-=item * ability to cause 'my' not to be inserted 
-
-=item * grammar additions to ignore comments
-
 =item * assigning directly to array elements 
-
-=item * diagnostics on STDERR 
 
 =item * support other PHP code enclosures
 

@@ -18,22 +18,37 @@ php_start:	/<\?php\s*/
 
 php_end:	/\?>/
 
-assignment:	lvalue /=/ rvalue /;\n?/
-		{ $PHP::Include::Vars::perl .= 
-		    "my $PHP::Include::Vars::lvalue = " .
-		    "$PHP::Include::Vars::rvalue;\n"; 
+assignment:	variable | constant
+
+variable:	lvalue /=/ rvalue /;/
+		{ 
+		    $PHP::Include::Vars::perl .= 
+			"my $PHP::Include::Vars::lvalue = " .
+			"$PHP::Include::Vars::rvalue;\n"; 
+		}
+
+constant:	/define\s*\(/ rvalue /,/ rvalue /\)/ /;/
+		{ 
+		    $PHP::Include::Vars::perl .= 
+			"use constant $item[2] => $item[4];\n";
 		}
 
 lvalue:		/\$[a-zA-Z_][0-9a-zA-Z]*/ 
-		{ $PHP::Include::Vars::lvalue = $item[1]; }
+		{ 
+		    $PHP::Include::Vars::lvalue = $item[1]; 
+		}
 
-rvalue:		number | string | list 
+rvalue:		number | string | list | bareword
 
 number:		/-?[0-9.]+/
-		{ $PHP::Include::Vars::rvalue = $item[1]; }
+		{ 
+		    $PHP::Include::Vars::rvalue = $item[1]; 
+		}
 
 string:		double_quoted | single_quoted
-		{ $PHP::Include::Vars::rvalue = $item[1]; }
+		{ 
+		    $PHP::Include::Vars::rvalue = $item[1]; 
+		}
 
 double_quoted:	/".*?"/
 
@@ -59,6 +74,9 @@ indexed:	rvalue
 		    "$item[1]";
 		}
 
+bareword:	/[0-9a-zA-Z_]+/
+		    
+
 GRAMMAR
 
 my $parser = Parse::RecDescent->new( $grammar );
@@ -66,6 +84,8 @@ my $parser = Parse::RecDescent->new( $grammar );
 FILTER {
     $perl = '';
     $parser->php_vars( $_ );
+    print STDERR "\n\nGENERATED PERL:\n\n", $perl, "\n\n"
+	if $PHP::Include::DEBUG; 
     $_ = $perl;
 }
 
