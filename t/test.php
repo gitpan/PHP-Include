@@ -1,5 +1,7 @@
 <?php
 
+# comment 
+
 $number1=123;
 $number2 = 123.45;
 
@@ -25,5 +27,10 @@ define( "ANOTHER_CONSTANT",	    "NJ, the garden state" );
 
 $hash5 = Array( 'constant'  => TEST_CONSTANT );
 $array5 = Array( 'test', ANOTHER_CONSTANT );
+
+$hash6 =  Array( 'foo' => 'bar', );
+$array6 = Array( 'foo', );
+
+# trailing comma
 
 ?>

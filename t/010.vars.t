@@ -42,4 +42,8 @@ ok( ANOTHER_CONSTANT eq 'NJ, the garden state', 'constants with whitespace' );
 ok( $array5[1] eq ANOTHER_CONSTANT, 'constant in array' );
 ok( $hash5{constant} eq TEST_CONSTANT, 'constant in hash' );
 
+## trailing comma in arrays
+is( $array6[ 0 ], 'foo', 'trailing comma in array' );
+is( $hash6{ foo }, 'bar', 'trailing comma in hash array' );
+
 ## thats all folks

@@ -11,11 +11,15 @@ my $grammar =
 
 <<'GRAMMAR';
 
-php_vars:	php_start assignment(s) php_end
+php_vars:	php_start statement(s) php_end
 
 php_start:	/\s*<\?php\s*/
 
 php_end:	/\s*\?>/
+
+statement:      comment | assignment
+
+comment:        /\s*\#.*/
 
 assignment:	( var_assign | hash_assign | array_assign | constant ) /;/
 		{
@@ -27,13 +31,13 @@ var_assign:	variable /=/ scalar
 		    $return = "my $item[1]=$item[3]"; 
 		}
 
-hash_assign:	variable /=/ /Array\s*\(/ pair(s /,/) /\s*\)/
+hash_assign:	variable /=/ /Array\s*\(/i pair(s /,/) /\s*(,\s*)?\)/
 		{ 
 		    $item[1] =~ s/^\$/%/;
 		    $return = "my $item[1]=(" . join( ',', @{$item[4]} ) . ')';
 		}
 
-array_assign:	variable /=/ /Array\s*\(/ element(s /,/) /\s*\)/
+array_assign:	variable /=/ /Array\s*\(/i element(s /,/) /\s*(,\s*)?\)/
 		{
 		    $item[1] =~ s/^\$/@/;
 		    $return = "my $item[1]=(" . join( ',', @{$item[4]} ) . ')'
