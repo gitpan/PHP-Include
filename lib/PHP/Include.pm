@@ -5,7 +5,7 @@ use warnings;
 use Filter::Simple;
 use Carp qw( croak );
 
-our $VERSION = .01;
+our $VERSION = .02;
 
 FILTER {
     s/
@@ -35,6 +35,7 @@ PHP::Include - Include PHP files in Perl
 =head1 SYNOPSIS
 
     use PHP::Include;
+    include_php_vars( 'file.php' );
 
 =head1 DESCRIPTION
 
@@ -90,9 +91,9 @@ Behind the scenes the PHP is rewritten as this Perl:
 	'www.bn.com'		=> 'Barnes & Noble',
 	'www.bookpool.com'	=> 'BookPool'
     );
-    my @times = Array( 10,12,14,16,18 );
+    my @times = ( 10,12,14,16,18 );
 
-Notice that the enclosing E<lt>php? and E<lt>? are removed, all variables are 
+Notice that the enclosing E<lt>php? and ?E<gt> are removed, all variables are 
 lexically scoped with 'my' and that the $ sigils are changed as appropriate to 
 (@ and %). Apart from that PHP and Perl are very similar.
 
@@ -107,6 +108,10 @@ lexically scoped with 'my' and that the $ sigils are changed as appropriate to
 =item * assigning directly to array elements 
 
 =item * diagnostics on STDERR 
+
+=item * support other PHP code enclosures
+
+=item * store compiled grammar if possible for speed gain
 
 =head1 SEE ALSO
 

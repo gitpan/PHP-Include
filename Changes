@@ -1,5 +1,8 @@
 Revision history for Perl extension PHP::Include.
 
+0.02  Mon Dec 30 09:02:00 2002
+	- docs update (thanks Andy)
+
 0.01  Tue Dec 17 14:10:36 2002
 	- original version; created by h2xs 1.22 with options
 		-X PHP/Include
