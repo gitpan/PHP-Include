@@ -1,6 +1,6 @@
 <?php
 
-# comment 
+# comment
 
 $number1=123;
 $number2 = 123.45;
@@ -23,14 +23,13 @@ $hash4 = Array(
 );
 
 define( "TEST_CONSTANT", 'NJ and you, perfect together' );
-define( "ANOTHER_CONSTANT",	    "NJ, the garden state" );
+define( "ANOTHER_CONSTANT", "NJ, the garden state" );
+define( "YETANOTHER_CONSTANT", 80 );
 
 $hash5 = Array( 'constant'  => TEST_CONSTANT );
 $array5 = Array( 'test', ANOTHER_CONSTANT );
 
 $hash6 =  Array( 'foo' => 'bar', );
 $array6 = Array( 'foo', );
-
-# trailing comma
 
 ?>

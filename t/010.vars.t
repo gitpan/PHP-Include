@@ -1,4 +1,4 @@
-use Test::More no_plan;
+use Test::More tests => 19; 
 
 use strict;
 use PHP::Include;
@@ -39,6 +39,7 @@ ok ( ($hash4{abe} eq 'Abraham Lincoln' and $hash4{larry} = 'Larry Wall' ),
 ## constants
 ok( TEST_CONSTANT eq 'NJ and you, perfect together', 'constants' );
 ok( ANOTHER_CONSTANT eq 'NJ, the garden state', 'constants with whitespace' ); 
+ok( YETANOTHER_CONSTANT eq 80, 'constant integer' );
 ok( $array5[1] eq ANOTHER_CONSTANT, 'constant in array' );
 ok( $hash5{constant} eq TEST_CONSTANT, 'constant in hash' );
 

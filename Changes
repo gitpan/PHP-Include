@@ -1,5 +1,10 @@
 Revision history for Perl extension PHP::Include.
 
+0.1   Sun Mar 14 09:08:34 2004
+        - fixed documentation error (thanks Aran Deltac)
+        - constants can now be integers
+        - no longer require 5.8.0
+
 0.08  Tue Mar 02 09:19:12 2004
         - added shell style comment handling (thanks Aaron Sherman)
         - allow trailing comma (thanks Aaron)

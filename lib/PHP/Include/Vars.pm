@@ -64,7 +64,7 @@ pair:		scalar /=>/ ( scalar | bareword )
 
 bareword:	/[0-9a-zA-Z_]+/
 		    
-constant:	/define\s*\(/ string /,/ string /\)/ 
+constant:	/define\s*\(/ string /,/ scalar /\)/ 
 		{ 
 		    $return =  "use constant $item[2] => $item[4]";
 		}

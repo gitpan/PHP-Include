@@ -5,7 +5,7 @@ use warnings;
 use Filter::Simple;
 use Carp qw( croak );
 
-our $VERSION = .08;
+our $VERSION = .1;
 our $DEBUG = 0;
 
 FILTER {
@@ -80,7 +80,7 @@ extend the complexity of PHP that may be included.
 
 =head1 EXPORTS
 
-=head2 import_php_vars( file )
+=head2 include_php_vars( file )
 
 This function is actually a macro that allows you to include PHP variable
 declarations in much the same way that you might C<require> a file of Perl 
