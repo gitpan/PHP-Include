@@ -3,8 +3,8 @@
 $number1=123;
 $number2 = 123.45;
 
-$string1='McHenry, IL';
-$string2 = "McHenry, IL";
+$string1 = 'McHenry, IL';
+$string2 = "Trenton, NJ";
 
 $array1 = Array( 123 );
 $array2 = Array( 123, 456, 789 );

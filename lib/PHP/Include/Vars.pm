@@ -6,76 +6,68 @@ use Parse::RecDescent;
 use Data::Dumper;
 
 our $perl = '';
-our $lvalue = '';
-our $rvalue = '';
 my $grammar = 
+
 
 <<'GRAMMAR';
 
 php_vars:	php_start assignment(s) php_end
 
-php_start:	/<\?php\s*/
+php_start:	/\s*<\?php\s*/
 
-php_end:	/\?>/
+php_end:	/\s*\?>/
 
-assignment:	variable | constant
-
-variable:	lvalue /=/ rvalue /;/
-		{ 
-		    $PHP::Include::Vars::perl .= 
-			"my $PHP::Include::Vars::lvalue = " .
-			"$PHP::Include::Vars::rvalue;\n"; 
+assignment:	( var_assign | hash_assign | array_assign | constant ) /;/
+		{
+		    $PHP::Include::Vars::perl .= "$item[1];\n";
 		}
 
-constant:	/define\s*\(/ rvalue /,/ rvalue /\)/ /;/
-		{ 
-		    $PHP::Include::Vars::perl .= 
-			"use constant $item[2] => $item[4];\n";
+var_assign:	variable /=/ scalar 
+		{
+		    $return = "my $item[1]=$item[3]"; 
 		}
 
-lvalue:		/\$[a-zA-Z_][0-9a-zA-Z]*/ 
+hash_assign:	variable /=/ /Array\s*\(/ pair(s /,/) /\s*\)/
 		{ 
-		    $PHP::Include::Vars::lvalue = $item[1]; 
+		    $item[1] =~ s/^\$/%/;
+		    $return = "my $item[1]=(" . join( ',', @{$item[4]} ) . ')';
 		}
 
-rvalue:		number | string | list | bareword
+array_assign:	variable /=/ /Array\s*\(/ element(s /,/) /\s*\)/
+		{
+		    $item[1] =~ s/^\$/@/;
+		    $return = "my $item[1]=(" . join( ',', @{$item[4]} ) . ')'
+		}
+
+scalar:		string | number	
+
+variable:	/\$[a-zA-Z_][0-9a-zA-Z_]*/ 
 
 number:		/-?[0-9.]+/
-		{ 
-		    $PHP::Include::Vars::rvalue = $item[1]; 
-		}
 
 string:		double_quoted | single_quoted
-		{ 
-		    $PHP::Include::Vars::rvalue = $item[1]; 
-		}
 
 double_quoted:	/".*?"/
 
 single_quoted:	/'.*?'/
 
-list:		/Array\s*\(/ element(s /,/) /\s*\)/
-		{ 
-		    $PHP::Include::Vars::rvalue = "(" .
-			join( ',', @{$item[2]} ) . ")"; 
-		}
+element:	scalar | bareword
 
-element:	( associative | indexed )
-
-associative:	rvalue /=>/ rvalue		
+pair:		scalar /=>/ ( scalar | bareword )
 		{ 
-		    $PHP::Include::Vars::lvalue =~ s/^\$/\%/; 
-		    "$item[1]=>$item[3]";
-		}
-
-indexed:	rvalue
-		{ 
-		    $PHP::Include::Vars::lvalue =~ s/^\$/\@/; 
-		    "$item[1]";
+		    $return = $item[1] . '=>' . $item[3];
 		}
 
 bareword:	/[0-9a-zA-Z_]+/
 		    
+constant:	/define\s*\(/ string /,/ string /\)/ 
+		{ 
+		    $return =  "use constant $item[2] => $item[4]";
+		}
+
+comments:	/^#.*$/
+
+whitespace:	/^\s+$/
 
 GRAMMAR
 
@@ -83,6 +75,7 @@ my $parser = Parse::RecDescent->new( $grammar );
 
 FILTER {
     $perl = '';
+    #$::RD_TRACE = 1;
     $parser->php_vars( $_ );
     print STDERR "\n\nGENERATED PERL:\n\n", $perl, "\n\n"
 	if $PHP::Include::DEBUG; 
