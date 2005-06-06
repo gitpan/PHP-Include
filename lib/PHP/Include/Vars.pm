@@ -19,7 +19,7 @@ php_end:	/\s*\?>/
 
 statement:      comment | assignment
 
-comment:        /\s*\#.*/
+comment:        /\s*(\#|\/\/).*/
 
 assignment:	( var_assign | hash_assign | array_assign | constant ) /;/
 		{

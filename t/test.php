@@ -1,6 +1,7 @@
 <?php
 
 # comment
+// another comment
 
 $number1=123;
 $number2 = 123.45;
