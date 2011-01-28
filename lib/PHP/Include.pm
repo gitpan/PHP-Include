@@ -5,7 +5,7 @@ use warnings;
 use Filter::Simple;
 use Carp qw( croak );
 
-our $VERSION = .2;
+our $VERSION = '0.30';
 our $DEBUG = 0;
 
 FILTER {
@@ -20,7 +20,7 @@ FILTER {
 	(.*)			# any amt of leading text
 	include_php_vars	# function call
 	\s*			# optional whitespace
-	\(			# opening parens		    
+	\(			# opening parens	
 	\s*			# optional whitespace
 	(["'])			# opening single or double quote
 	(.+)			# a string
@@ -43,6 +43,9 @@ sub read_file {
     print STDERR qq(OPENING PHP FILE "$file" FOR FILTER $filter\n\n) if $DEBUG;
     open( IN, $file ) || croak( "$file doesn't exist!" );
     my $php =  join( '', <IN> );
+    # strip comments (sorry if you have # in strings)
+    $php =~ s/^\s*#.*\n//gm; # full line comments, delete line
+    $php =~ s/#.*\n/\n/g;    # others, keep new line
     print STDERR "ORIGINAL PHP:\n\n", $php if $DEBUG;
     close( IN );
     return( "use $filter;\n" . $php . "no $filter;\n" );
@@ -153,13 +156,17 @@ to figure out what isn't getting parsed properly.
 
 =head1 AUTHOR
 
+Maintained by Alberto Simões, E<lt>ambs@cpan.orgE<gt>
+
 Ed Summers, E<lt>ehs@pobox.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2002 by Ed Summers
+Copyright 2002-2010 by Ed Summers
+
+Copyright 2011 by Alberto Simões
 
 This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself. 
+it under the same terms as Perl itself.
 
 =cut

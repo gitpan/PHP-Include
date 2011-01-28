@@ -8,5 +8,5 @@ WriteMakefile(
 				   'Filter::Simple'	=> .78 
 				   },
      	ABSTRACT_FROM		=> 'lib/PHP/Include.pm', 
-	AUTHOR			=> 'Ed Summers <ehs@pobox.com>',
+	AUTHOR			=> 'Alberto Simoes <ambs@cpan.org> and Ed Summers <ehs@pobox.com>',
 );

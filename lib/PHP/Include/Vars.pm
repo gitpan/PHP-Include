@@ -57,19 +57,22 @@ single_quoted:	/'.*?'/
 
 element:	scalar | bareword
 
-pair:		scalar /=>/ ( scalar | bareword )
-		{ 
+pair:		scalar /=>/ ( scalar | array | bareword )
+		{
 		    $return = $item[1] . '=>' . $item[3];
 		}
 
+array:          /Array\s*\(/i element(s /,/) /\s*(,\s*)?\)/
+                {
+                    $return = '['.join(',',@{$item[2]}) . ']';
+                }
+
 bareword:	/[0-9a-zA-Z_]+/
-		    
+		
 constant:	/define\s*\(/ string /,/ scalar /\)/ 
-		{ 
+		{
 		    $return =  "use constant $item[2] => $item[4]";
 		}
-
-comments:	/^#.*$/
 
 whitespace:	/^\s+$/
 
