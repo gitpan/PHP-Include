@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               PHP-Include
-version:            0.32
+version:            0.33
 abstract:           Include PHP files in Perl 
 author:
     - Alberto Simoes <ambs@cpan.org> and Ed Summers <ehs@pobox.com>
