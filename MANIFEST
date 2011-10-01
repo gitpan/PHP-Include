@@ -18,3 +18,6 @@ t/hoh.php
 t/013.hoh.t
 t/loh.php
 t/014.loh.t
+t/deepstructure.php
+t/015.deepstructure.t
+META.json                                Module JSON meta-data (added by MakeMaker)

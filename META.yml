@@ -1,23 +1,23 @@
---- #YAML:1.0
-name:               PHP-Include
-version:            0.33
-abstract:           Include PHP files in Perl 
+---
+abstract: 'Include PHP files in Perl '
 author:
-    - Alberto Simoes <ambs@cpan.org> and Ed Summers <ehs@pobox.com>
-license:            unknown
-distribution_type:  module
-configure_requires:
-    ExtUtils::MakeMaker:  0
+  - 'Alberto Simoes <ambs@cpan.org> and Ed Summers <ehs@pobox.com>'
 build_requires:
-    ExtUtils::MakeMaker:  0
-requires:
-    Filter::Simple:     0.78
-    Parse::RecDescent:  1
-no_index:
-    directory:
-        - t
-        - inc
-generated_by:       ExtUtils::MakeMaker version 6.56
+  ExtUtils::MakeMaker: 0
+configure_requires:
+  ExtUtils::MakeMaker: 0
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.59, CPAN::Meta::Converter version 2.112621'
+license: unknown
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: PHP-Include
+no_index:
+  directory:
+    - t
+    - inc
+requires:
+  Filter::Simple: 0.78
+  Parse::RecDescent: 1
+version: 0.34
